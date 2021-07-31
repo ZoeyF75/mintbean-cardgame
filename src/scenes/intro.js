@@ -1,20 +1,10 @@
 import Phaser from 'phaser';
-import start from '../assets/start.png';
-import deck from '../assets/deck.png';
 import { createDeck } from '../assets/helper/deck';
 import { configWidth, configHeight } from '../assets/helper/gameStateVariables';
 
 class intro extends Phaser.Scene {
   constructor(){
 		super({ key: 'intro' })
-  }
-  
-  preload() {
-    this.load.image('start', start);
-    this.load.spritesheet('deck', deck, {
-      frameWidth: 1053 / 13,
-      frameHeight: 587 / 5
-    });
   }
 
   create() {
@@ -29,20 +19,27 @@ class intro extends Phaser.Scene {
       this.add.image((configWidth / 2), (configHeight / 2), 'start');
     }, 2500)
 
-    this.shuffledDeck = createDeck(); //returns array of shuffled deck
     this.mysprite = this.add.sprite((configWidth / 2), (configHeight / 2) + 150, 'deck').setScale(0.5);
-
+    
+    let frameArray = [52];
+    for (let i = 0; i < 52; i++) {
+      frameArray.push(i);
+    }
     this.anims.create( {
       key: "animation",
-      frames: this.anims.generateFrameNumbers("deck"),
+      frames: this.anims.generateFrameNumbers('deck', { frames: frameArray}),
       frameRate: 5,
-      repeat: -1
+      repeat: -1,
+      yoyo: true
     });
     this.mysprite.play("animation");
 
+    const shuffledDeck = createDeck(); //returns array of shuffled deck
     this.input.on("pointerdown", () => {
       this.scene.start("bet", {
-        balance : 350
+        balance : 350,
+        deckIndex : 0,
+        shuffledDeck
       });
       this.scene.remove("intro");
       clearTimeout(this.time);

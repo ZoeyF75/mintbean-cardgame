@@ -1,13 +1,4 @@
 import Phaser, { Game } from 'phaser';
-import background from '../assets/table.jpeg';
-import redchip from '../assets/chips.png';
-import greenchip from '../assets/greenchip.png';
-import bluechip from '../assets/bluechip.png';
-import blackchip from '../assets/blackchip.png';
-import whitechip from '../assets/whitechip.png';
-import fiftycents from '../assets/50cent.png';
-import betButton from '../assets/betButton.png';
-import clearButton from '../assets/button.png';
 import { configWidth, configHeight } from '../assets/helper/gameStateVariables';
 import { calculateBalance } from '../assets/helper/balance';
 let gameState = { changeScene : false };
@@ -19,20 +10,10 @@ class bet extends Phaser.Scene {
 
   init(data) {
     this.balance = data.balance;
+    this.deckIndex = data.deckIndex;
+    this.shuffledDeck = data.shuffledDeck
   }
   
-  preload() {
-    this.load.image('bg', background);
-    this.load.image('whitechip', whitechip);
-    this.load.image('bluechip', bluechip);
-    this.load.image('redchip', redchip);
-    this.load.image('greenchip', greenchip);
-    this.load.image('blackchip', blackchip);
-    this.load.image('fiftycents', fiftycents);
-    this.load.image('betButton', betButton);
-    this.load.image('clearButton', clearButton);
-  }
-
   create() {
     this.add.image(configWidth / 2, configHeight / 2, 'bg');
 
@@ -244,7 +225,9 @@ class bet extends Phaser.Scene {
     if (gameState.changeScene) {
       this.scene.start("deal", {
         balance : this.balance,
-        betAmount : gameState.betAmount
+        betAmount : gameState.betAmount,
+        deckIndex : this.deckIndex,
+        shuffledDeck : this.shuffledDeck
       });
       this.scene.remove("bet");
     }
