@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production",
+    "watch": "webpack --mode development --watch"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,8 @@
   },
   "dependencies": {
     "express": "^4.17.1",
-    "phaser": "^3.23.0"
+    "file-loader": "^6.2.0",
+    "phaser": "^3.23.0",
+    "url-loader": "^4.1.1"
   }
 }
