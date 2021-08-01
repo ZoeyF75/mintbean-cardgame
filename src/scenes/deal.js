@@ -124,7 +124,7 @@ class deal extends Phaser.Scene {
             this.playersPoints[0] += this.currentCardValue;
           }
         }
-        this.playerTotalVal = totalValue(this.playersPoints);
+        this.playerTotalVal = totalValue(this.playersPoints, this.playerCardCount);
         this.updateAmount = true;
         console.log("player", this.playersPoints, this.playerTotalVal);
         gameState.playersCard = false;
@@ -161,7 +161,7 @@ class deal extends Phaser.Scene {
               this.dealersPoints[0] += this.currentCardValue;
             }
           }
-        this.dealerTotalVal = totalValue(this.dealersPoints);
+        this.dealerTotalVal = totalValue(this.dealersPoints, this.dealerCardCount);
         this.updateAmount = true;
         console.log("dealer", this.dealersPoints, this.dealerTotalVal);
         this.deckIndex++;
@@ -201,10 +201,8 @@ class deal extends Phaser.Scene {
       hitButton.disableInteractive();
       stayButton.disableInteractive();
       this.scene.addCard();
-      while (this.scene.dealersPoints[0] || this.scene.dealersPoints[1]) {
-        setTimeout(() => {
-          this.scene.addCard();
-        }, 3000);
+      if (this.scene.dealersPoints[0] <= 17 || this.scene.dealersPoints[1] <= 17) {
+        this.scene.calculateDealerHand();
       }
     });
     this.add.text((configWidth / 2) + 75, configHeight - 60, 'Stay', {
@@ -221,9 +219,19 @@ class deal extends Phaser.Scene {
     
   }
 
+  calculateDealerHand() {
+    this.dealerInterval = setInterval(() => {
+      console.log("runs");
+    })
+  }
+
   update ()
   {
-    if (this.updateAmount) {
+    if (this.dealersPoints[0] <= 17 || this.dealersPoints[1] <= 17) {
+      clearInterval(this.dealerInterval);
+    }
+
+    if (this.updateAmount && this.text) {
       this.text.destroy();
       this.text = this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {
         fill: "#ffffff",
