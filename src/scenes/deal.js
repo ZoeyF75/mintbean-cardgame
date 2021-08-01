@@ -69,15 +69,17 @@ class deal extends Phaser.Scene {
     // }
 
     //resets after every hand
-    gameState.xDiff = 0; 
-    gameState.ydiff = 0;
     gameState.playersCard = true;
-    this.addCard(); //runs 3 times for sure
+    this.playersPoints = [0, 0]; //array for aces
+    this.dealersPoints = [0, 0];
+    this.playerCardCount = 0; //used for visual effects and positioning
+    this.dealerCardCount = 0;
+    this.currentCardValue = 0;
     gameState.addcard = true;
-    this.playersPoints = []; //array for aces
-    this.dealersPoints = [];
-
-
+    this.addCard(); //runs 3 times for initial deal
+    setTimeout(() => {
+      this.addCard();
+    }, 3000)
     // this.mysprite = this.add.sprite(200, 200, 'deck').setScale(0.5);
     // this.add.image(200, 300, 'deck').setScale(0.5).setFrame(this.shuffledDeck[0]);
     // this.mysprite.setFrame(this.shuffledDeck[0]);
@@ -93,7 +95,7 @@ class deal extends Phaser.Scene {
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 300, (configHeight / 2) - 300));
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 200, configHeight - 350));
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 100, configHeight - 300));
-      points.push(new Phaser.Math.Vector2((configWidth / 2) + gameState.xDiff, configHeight - 200 - gameState.ydiff));
+      points.push(new Phaser.Math.Vector2((configWidth / 2) + this.playerCardCount, configHeight - 200 - this.playerCardCount));
       curve = new Phaser.Curves.Spline(points);
       this.tweens.add({
         targets: path,
@@ -101,29 +103,62 @@ class deal extends Phaser.Scene {
         duration: 2000,
       });
       setTimeout(() => {
-        this.add.image((configWidth / 2) + gameState.xDiff, configHeight - 200 - gameState.ydiff, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
+        this.add.image((configWidth / 2) + this.playerCardCount, configHeight - 200 - this.playerCardCount, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
         gameState.backCard.destroy();
+        gameState.playersCard = false;
+        console.log(gameState);
+        this.deckIndex++;
+        this.playerCardCount += 10;
+        this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
       }, 2100);
-      this.deckIndex++;
-      gameState.xDiff += 10;
-      gameState.ydiff += 10;
-      gameState.playersCard = false;
+      
+      if (Array.isArray(this.currentCardValue)) {
+        this.playersPoints[0] += this.currentCardValue[0];
+        this.playersPoints[1] += this.currentCardValue[1];
+        console.log(this.playersPoints);
+      } else {
+        this.playersPoints[0] += this.currentCardValue;
+        console.log(this.playersPoints);
+      }
       
     } else { //animation for dealers hand
-
+        points.push(new Phaser.Math.Vector2((configWidth / 2) + 300, (configHeight / 2) - 300));
+        points.push(new Phaser.Math.Vector2((configWidth / 2) + 100, (configHeight / 2) - 250));
+        points.push(new Phaser.Math.Vector2((configWidth / 2) - this.dealerCardCount, (configHeight / 2) - 200));
+        curve = new Phaser.Curves.Spline(points);
+        this.tweens.add({
+          targets: path,
+          t: 1,
+          duration: 1500,
+        });
+        setTimeout(() => {
+          this.add.image((configWidth / 2) - this.dealerCardCount, (configHeight / 2) - 200, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
+          gameState.backCard.destroy();
+          this.deckIndex++;
+          this.dealerCardCount += 50;
+          gameState.playersCard = true;
+          this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
+        }, 2100);
+      
+        if (Array.isArray(this.currentCardValue)) {
+          this.dealersPoints[0] += this.currentCardValue[0];
+          this.dealersPoints[1] += this.currentCardValue[1];
+          console.log(this.dealersPoints);
+        } else {
+          this.dealersPoints[0] += this.currentCardValue;
+          console.log(this.dealersPoints);
+        }
     }
   
   }
 
   update ()
   {
-    if (gameState.addcard) {
-      console.log("runs");
+    if (gameState.backCard) {
       graphics.clear();
       curve.getPoint(path.t, path.vec);
       gameState.backCard.x = path.vec.x;
       gameState.backCard.y = path.vec.y;
-      this.gameState.addcard = false;
     }
     
   }
