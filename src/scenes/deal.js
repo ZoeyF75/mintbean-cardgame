@@ -39,6 +39,7 @@ class deal extends Phaser.Scene {
     this.playerCardCount = 0; //used for visual effects and positioning
     this.dealerCardCount = 0;
     this.currentCardValue = 0;
+    this.stand = false;
     gameState.addcard = true;
 
     this.addCard(); //runs 3 times for initial deal
@@ -51,6 +52,7 @@ class deal extends Phaser.Scene {
     setTimeout(() => { //add player buttons, after initial deal
       this.secondDeal();
     }, 9000);
+
   }
 
   displayChips(x, y) {
@@ -112,8 +114,8 @@ class deal extends Phaser.Scene {
           this.playersPoints[1] += this.currentCardValue[1];
         } else {
           if (this.playersPoints[1] > 0) {
-            this.playersPoints[0] += this.currentCardValue[0];
-            this.playersPoints[1] += this.currentCardValue[0];
+            this.playersPoints[0] += this.currentCardValue;
+            this.playersPoints[1] += this.currentCardValue;
           } else {
             this.playersPoints[0] += this.currentCardValue;
           }
@@ -138,11 +140,16 @@ class deal extends Phaser.Scene {
           this.add.image((configWidth / 2) - this.dealerCardCount, (configHeight / 2) - 200, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
           gameState.backCard.destroy();
           this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
-          if (this.dealersPoints[1] > 0) {
+          if (Array.isArray(this.currentCardValue)) {
             this.dealersPoints[0] += this.currentCardValue[0];
-            this.dealersPoints[1] += this.currentCardValue[0];
+            this.dealersPoints[1] += this.currentCardValue[1];
           } else {
-            this.dealersPoints[0] += this.currentCardValue;
+            if (this.dealersPoints[1] > 0) {
+              this.dealersPoints[0] += this.currentCardValue;
+              this.dealersPoints[1] += this.currentCardValue;
+            } else {
+              this.dealersPoints[0] += this.currentCardValue;
+            }
           }
           this.dealerTotalVal = totalValue(this.dealersPoints);
           console.log("dealer", this.dealersPoints, this.dealerTotalVal);
@@ -154,24 +161,52 @@ class deal extends Phaser.Scene {
   }
 
   secondDeal() {
-    this.hitButton = this.add.image((configWidth / 2) - 100, configHeight - 50, 'betButton').setScale(0.1).setInteractive();
-      this.add.text((configWidth / 2) - 120, configHeight - 60, 'Hit', {
-        fill: "#ffffff",
-        fontSize: "24px",
-        align: "center",
+    let hitButton = this.add.image((configWidth / 2) - 100, configHeight - 50, 'betButton').setScale(0.1).setAlpha(0.5).setInteractive();
+    if (!this.stand) {
+      hitButton.on('pointerover', function () {
+        hitButton.setAlpha(1);
       });
-      this.stayButton = this.add.image((configWidth / 2) + 105, configHeight - 50, 'clearButton').setScale(0.1).setInteractive();
-      this.add.text((configWidth / 2) + 85, configHeight - 60, 'Stay', {
-        fill: "#ffffff",
-        fontSize: "24px",
-        align: "center",
+      hitButton.on('pointerout', function () {
+        hitButton.setAlpha(0.5);
       });
+      hitButton.on('pointerdown', function () {
+        gameState.playersCard = true;
+        this.scene.addCard(); //player
+      });
+    }
+    this.add.text((configWidth / 2) - 120, configHeight - 60, 'Hit', {
+      fill: "#ffffff",
+      fontSize: "24px",
+      align: "center",
+    });
+    let stayButton = this.add.image((configWidth / 2) + 105, configHeight - 50, 'clearButton').setScale(0.1).setAlpha(0.5).setInteractive();
+    stayButton.on('pointerover', function () {
+      stayButton.setAlpha(1);
+    });
+    stayButton.on('pointerout', function () {
+      stayButton.setAlpha(0.5);
+    });
+    stayButton.on('pointerdown', function () {
+      gameState.playersCard = false;
+      this.stand = true;
+      this.scene.addCard();
+      while (this.dealersPoints[0] < 21 && this.dealersPoints[1] < 21) {
+        setTimeout(() => {
+          this.scene.addCard();
+        }, 3000)
+      }
+    });
+    this.add.text((configWidth / 2) + 75, configHeight - 60, 'Stay', {
+      fill: "#ffffff",
+      fontSize: "24px",
+      align: "center",
+    });
 
-      this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {
-        fill: "#ffffff",
-        fontSize: "24px",
-        align: "center",
-      }).setOrigin(0.5);
+    this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {
+      fill: "#ffffff",
+      fontSize: "24px",
+      align: "center",
+    }).setOrigin(0.5);
     
   }
 
