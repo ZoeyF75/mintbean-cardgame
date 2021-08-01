@@ -6,6 +6,7 @@ function createDeck() {
     }
   }
   deck = shuffleDeck(deck);
+  console.log(deck);
   return deck;
 }
 

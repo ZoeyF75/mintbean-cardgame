@@ -24,17 +24,17 @@ class deal extends Phaser.Scene {
   {  
     this.add.image(configWidth / 2, configHeight / 2, 'bg').setScale(0.42); //table bg
 
-    // this.chips = calculateBalance(this.betAmount); //calculates chips to display for bet
-    // let x = configWidth / 2;
-    // let y = configHeight - 120;
-    // if (this.chips.black > 0) {
-    //   y == configHeight - 120 ? configHeight - 120 : y -= 10;
-    //   let y = (configHeight / 2) + 150;
-    //   for (let i = 0; i < this.chips.black; i++) {
-    //     this.add.image(x, y, 'blackchip').setScale(0.07);
-    //     y -= 10;
-    //   }
-    // }
+    this.chips = calculateBalance(this.betAmount); //calculates chips to display for bet
+    let x = configWidth / 2;
+    let y = configHeight - 120;
+    if (this.chips.black > 0) {
+      y == configHeight - 120 ? configHeight - 120 : y -= 10;
+      let y = (configHeight / 2) + 150;
+      for (let i = 0; i < this.chips.black; i++) {
+        this.add.image(x, y, 'blackchip').setScale(0.07);
+        y -= 10;
+      }
+    }
     // if (this.chips.green > 0) {
     //   y == configHeight - 120 ? configHeight - 120 : y -= 10;
     //   let y = (configHeight / 2) + 150;
@@ -76,6 +76,7 @@ class deal extends Phaser.Scene {
     this.dealerCardCount = 0;
     this.currentCardValue = 0;
     gameState.addcard = true;
+
     this.addCard(); //runs 3 times for initial deal
     setTimeout(() => {
       this.addCard();
@@ -83,10 +84,31 @@ class deal extends Phaser.Scene {
     setTimeout(() => {
       this.addCard();
     }, 6000);
+
+    setTimeout(() => { //add player buttons
+      this.hitButton = this.add.image((configWidth / 2) - 100, configHeight - 50, 'betButton').setScale(0.1).setInteractive();
+      this.add.text((configWidth / 2) - 120, configHeight - 60, 'Hit', {
+        fill: "#ffffff",
+        fontSize: "24px",
+        align: "center",
+      });
+      this.stayButton = this.add.image((configWidth / 2) + 115, configHeight - 50, 'clearButton').setScale(0.1).setInteractive();
+      this.add.text((configWidth / 2) + 80, configHeight - 60, 'Stay', {
+        fill: "#ffffff",
+        fontSize: "24px",
+        align: "center",
+      });
+
+      this.add.text((configWidth / 2), configHeight - 60, `${this.playersPoints[0]}`, {
+        fill: "#ffffff",
+        fontSize: "24px",
+        align: "center",
+      });
+    }, 9000);
+
     // this.mysprite = this.add.sprite(200, 200, 'deck').setScale(0.5);
     // this.add.image(200, 300, 'deck').setScale(0.5).setFrame(this.shuffledDeck[0]);
     // this.mysprite.setFrame(this.shuffledDeck[0]);
-
   }
 
   addCard () {
@@ -108,21 +130,18 @@ class deal extends Phaser.Scene {
       setTimeout(() => {
         this.add.image((configWidth / 2) + this.playerCardCount, configHeight - 250 - this.playerCardCount, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
         gameState.backCard.destroy();
+        this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
+        if (Array.isArray(this.currentCardValue)) {
+          this.playersPoints[0] += this.currentCardValue[0];
+          this.playersPoints[1] += this.currentCardValue[1];
+        } else {
+          this.playersPoints[0] += this.currentCardValue;
+        }
+        console.log("player", this.playersPoints);
         gameState.playersCard = false;
         this.deckIndex++;
         this.playerCardCount += 15;
-        this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
       }, 2100);
-      
-      if (Array.isArray(this.currentCardValue)) {
-        this.playersPoints[0] += this.currentCardValue[0];
-        this.playersPoints[1] += this.currentCardValue[1];
-        console.log(this.playersPoints);
-      } else {
-        this.playersPoints[0] += this.currentCardValue;
-        console.log(this.playersPoints);
-      }
-      
     } else { //animation for dealers hand
         points.push(new Phaser.Math.Vector2((configWidth / 2) + 300, (configHeight / 2) - 300));
         points.push(new Phaser.Math.Vector2((configWidth / 2) + 100, (configHeight / 2) - 250));
@@ -136,20 +155,18 @@ class deal extends Phaser.Scene {
         setTimeout(() => {
           this.add.image((configWidth / 2) - this.dealerCardCount, (configHeight / 2) - 200, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
           gameState.backCard.destroy();
+          this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
+          if (Array.isArray(this.currentCardValue)) {
+            this.dealersPoints[0] += this.currentCardValue[0];
+            this.dealersPoints[1] += this.currentCardValue[1];
+          } else {
+            this.dealersPoints[0] += this.currentCardValue;
+          }
+          console.log("dealer", this.dealersPoints);
           this.deckIndex++;
           this.dealerCardCount += 50;
           gameState.playersCard = true;
-          this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
         }, 2100);
-      
-        if (Array.isArray(this.currentCardValue)) {
-          this.dealersPoints[0] += this.currentCardValue[0];
-          this.dealersPoints[1] += this.currentCardValue[1];
-          console.log(this.dealersPoints);
-        } else {
-          this.dealersPoints[0] += this.currentCardValue;
-          console.log(this.dealersPoints);
-        }
     }
   
   }

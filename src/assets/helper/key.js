@@ -25,6 +25,6 @@ export function key(cardIndex) {
   } else if (cardIndex == 12 || cardIndex == 25 || cardIndex == 38 || cardIndex == 51) {
     cardValue = [1, 11];
   }
-
+  
   return cardValue;
 }
