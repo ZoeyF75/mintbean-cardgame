@@ -24,49 +24,45 @@ class deal extends Phaser.Scene {
   {  
     this.add.image(configWidth / 2, configHeight / 2, 'bg').setScale(0.42); //table bg
 
+    
+
     this.chips = calculateBalance(this.betAmount); //calculates chips to display for bet
-    let x = configWidth / 2;
-    let y = configHeight - 120;
+    let x = (configWidth / 2);
+    let y = configHeight - 200;
+    const circle = this.add.circle(x, y, 16, 0x90EE90);
+    circle.setStrokeStyle(4, 0xefc53f);
+    y -= 5;
     if (this.chips.black > 0) {
-      y == configHeight - 120 ? configHeight - 120 : y -= 10;
-      let y = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.black; i++) {
-        this.add.image(x, y, 'blackchip').setScale(0.07);
+        this.add.image(x, y, 'blackchip').setScale(0.05);
         y -= 10;
       }
     }
-    // if (this.chips.green > 0) {
-    //   y == configHeight - 120 ? configHeight - 120 : y -= 10;
-    //   let y = (configHeight / 2) + 150;
-    //   for (let i = 0; i < this.chips.green; i++) {
-    //     this.add.image(x, y, 'greenchip').setScale(0.07);
-    //     y -= 10;
-    //   }
-    // }
-    // if (this.chips.red > 0) {
-    //   y == configHeight - 120 ? configHeight - 120 : y -= 10;
-    //   let y = (configHeight / 2) + 150;
-    //   for (let i = 0; i < this.chips.red; i++) {
-    //     this.add.image(x, y, 'redchip').setScale(0.07);
-    //     y -= 10;
-    //   }
-    // }
-    // if (this.chips.blue > 0) {
-    //   y == configHeight - 120 ? configHeight - 120 : y -= 10;
-    //   let y = (configHeight / 2) + 150;
-    //   for (let i = 0; i < this.chips.blue; i++) {
-    //     this.add.image(x, y, 'bluechip').setScale(0.07);
-    //     y -= 10;
-    //   }
-    // }
+    if (this.chips.green > 0) {
+      for (let i = 0; i < this.chips.green; i++) {
+        this.add.image(x, y, 'greenchip').setScale(0.05);
+        y -= 10;
+      }
+    }
+    if (this.chips.red > 0) {
+      for (let i = 0; i < this.chips.red; i++) {
+        this.add.image(x, y, 'redchip').setScale(0.05);
+        y -= 10;
+      }
+    }
+    if (this.chips.blue > 0) {
+      for (let i = 0; i < this.chips.blue; i++) {
+        this.add.image(x, y, 'bluechip').setScale(0.05);
+        y -= 10;
+      }
+    }
 
-    // if (this.chips.white > 0) {
-    //   y == configHeight - 120 ? configHeight - 120 : y -= 10;
-    //   for (let i = 0; i < this.chips.white; i++) {
-    //     this.add.image(x, y, 'whitechip').setScale(0.07);
-    //     y -= 10;
-    //   }
-    // }
+    if (this.chips.white > 0) {
+      for (let i = 0; i < this.chips.white; i++) {
+        this.add.image(x, y, 'whitechip').setScale(0.05);
+        y -= 10;
+      }
+    }
 
     //resets after every hand
     gameState.playersCard = true;
@@ -93,7 +89,7 @@ class deal extends Phaser.Scene {
         align: "center",
       });
       this.stayButton = this.add.image((configWidth / 2) + 115, configHeight - 50, 'clearButton').setScale(0.1).setInteractive();
-      this.add.text((configWidth / 2) + 80, configHeight - 60, 'Stay', {
+      this.add.text((configWidth / 2) + 85, configHeight - 60, 'Stay', {
         fill: "#ffffff",
         fontSize: "24px",
         align: "center",
@@ -120,7 +116,7 @@ class deal extends Phaser.Scene {
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 300, (configHeight / 2) - 300));
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 200, configHeight - 350));
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 100, configHeight - 300));
-      points.push(new Phaser.Math.Vector2((configWidth / 2) + this.playerCardCount, configHeight - 250 - this.playerCardCount));
+      points.push(new Phaser.Math.Vector2((configWidth / 2) + 40 + this.playerCardCount, configHeight - 250 - this.playerCardCount));
       curve = new Phaser.Curves.Spline(points);
       this.tweens.add({
         targets: path,
@@ -128,7 +124,7 @@ class deal extends Phaser.Scene {
         duration: 2000,
       });
       setTimeout(() => {
-        this.add.image((configWidth / 2) + this.playerCardCount, configHeight - 250 - this.playerCardCount, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
+        this.add.image((configWidth / 2) + 40 + this.playerCardCount, configHeight - 250 - this.playerCardCount, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
         gameState.backCard.destroy();
         this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
         if (Array.isArray(this.currentCardValue)) {
