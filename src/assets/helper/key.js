@@ -31,7 +31,6 @@ function key(cardIndex) {
 
 function totalValue(currentArray, numOfAdditionalCards) {
   let returnVal;
-  console.log(numOfAdditionalCards);
   if (currentArray[0] == 21 || currentArray[1] == 21) {
     numOfAdditionalCards == 1 ? returnVal = "BLACKJACK" : returnVal = 21;
   } else if (currentArray[1] == 0) { //only one value

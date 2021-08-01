@@ -172,7 +172,7 @@ class deal extends Phaser.Scene {
   }
 
   secondDeal() {
-    let hitButton = this.add.image((configWidth / 2) - 100, configHeight - 50, 'betButton').setScale(0.1).setAlpha(0.5).setInteractive();
+    let hitButton = this.add.image((configWidth / 2) - 105, configHeight - 50, 'betButton').setScale(0.1).setAlpha(0.5).setInteractive();
       hitButton.on('pointerover', function () {
         hitButton.setAlpha(1);
       });
@@ -184,12 +184,12 @@ class deal extends Phaser.Scene {
         this.scene.addCard(); //player
       });
     
-    this.add.text((configWidth / 2) - 120, configHeight - 60, 'Hit', {
+    this.add.text((configWidth / 2) - 125, configHeight - 60, 'Hit', {
       fill: "#ffffff",
       fontSize: "24px",
       align: "center",
     });
-    let stayButton = this.add.image((configWidth / 2) + 105, configHeight - 50, 'clearButton').setScale(0.1).setAlpha(0.5).setInteractive();
+    let stayButton = this.add.image((configWidth / 2) + 110, configHeight - 50, 'clearButton').setScale(0.1).setAlpha(0.5).setInteractive();
     stayButton.on('pointerover', function () {
       stayButton.setAlpha(1);
     });
@@ -200,12 +200,12 @@ class deal extends Phaser.Scene {
       gameState.playersCard = false;
       hitButton.disableInteractive();
       stayButton.disableInteractive();
+      this.scene.playersPoints[0] > this.scene.playersPoints[1] ? this.scene.playerTotalVal = this.scene.playersPoints[0] : this.scene.playerTotalVal = this.scene.playersPoints[1];
+      this.scene.updateAmount = true;
       this.scene.addCard();
-      if (this.scene.dealersPoints[0] <= 17 || this.scene.dealersPoints[1] <= 17) {
-        this.scene.calculateDealerHand();
-      }
+      this.scene.calculateDealerHand();
     });
-    this.add.text((configWidth / 2) + 75, configHeight - 60, 'Stay', {
+    this.add.text((configWidth / 2) + 80, configHeight - 60, 'Stay', {
       fill: "#ffffff",
       fontSize: "24px",
       align: "center",
@@ -220,15 +220,15 @@ class deal extends Phaser.Scene {
   }
 
   calculateDealerHand() {
-    this.dealerInterval = setInterval(() => {
+    gameState.dealerInterval = setInterval(() => {
       console.log("runs");
-    })
+    }, 3000);
   }
 
   update ()
   {
     if (this.dealersPoints[0] <= 17 || this.dealersPoints[1] <= 17) {
-      clearInterval(this.dealerInterval);
+      clearInterval(gameState.dealerInterval);
     }
 
     if (this.updateAmount && this.text) {
