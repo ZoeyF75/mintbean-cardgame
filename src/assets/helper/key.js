@@ -29,10 +29,10 @@ function key(cardIndex) {
   return cardValue;
 }
 
-function totalValue(currentArray) {
+function totalValue(currentArray, numOfAdditionalCards) {
   let returnVal;
   if (currentArray[0] == 21 || currentArray[1] == 21) {
-    returnVal = "BLACKJACK";
+    numOfAdditionalCards == 1 ? returnVal = "BLACKJACK" : returnVal = 21;
   } else if (currentArray[1] == 0) { //only one value
     returnVal = currentArray[0];
   } else if (currentArray[1] > 0) { //two values
