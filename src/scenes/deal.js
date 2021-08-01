@@ -79,7 +79,10 @@ class deal extends Phaser.Scene {
     this.addCard(); //runs 3 times for initial deal
     setTimeout(() => {
       this.addCard();
-    }, 3000)
+    }, 3000);
+    setTimeout(() => {
+      this.addCard();
+    }, 6000);
     // this.mysprite = this.add.sprite(200, 200, 'deck').setScale(0.5);
     // this.add.image(200, 300, 'deck').setScale(0.5).setFrame(this.shuffledDeck[0]);
     // this.mysprite.setFrame(this.shuffledDeck[0]);
@@ -95,7 +98,7 @@ class deal extends Phaser.Scene {
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 300, (configHeight / 2) - 300));
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 200, configHeight - 350));
       points.push(new Phaser.Math.Vector2((configWidth / 2) + 100, configHeight - 300));
-      points.push(new Phaser.Math.Vector2((configWidth / 2) + this.playerCardCount, configHeight - 200 - this.playerCardCount));
+      points.push(new Phaser.Math.Vector2((configWidth / 2) + this.playerCardCount, configHeight - 250 - this.playerCardCount));
       curve = new Phaser.Curves.Spline(points);
       this.tweens.add({
         targets: path,
@@ -103,12 +106,11 @@ class deal extends Phaser.Scene {
         duration: 2000,
       });
       setTimeout(() => {
-        this.add.image((configWidth / 2) + this.playerCardCount, configHeight - 200 - this.playerCardCount, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
+        this.add.image((configWidth / 2) + this.playerCardCount, configHeight - 250 - this.playerCardCount, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
         gameState.backCard.destroy();
         gameState.playersCard = false;
-        console.log(gameState);
         this.deckIndex++;
-        this.playerCardCount += 10;
+        this.playerCardCount += 15;
         this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
       }, 2100);
       
