@@ -39,7 +39,7 @@ class deal extends Phaser.Scene {
     this.playerCardCount = 0; //used for visual effects and positioning
     this.dealerCardCount = 0;
     this.currentCardValue = 0;
-    gameState.addcard = true;
+    this.updateAmount = false;
 
     this.addCard(); //runs 3 times for initial deal
     setTimeout(() => {
@@ -125,6 +125,7 @@ class deal extends Phaser.Scene {
           }
         }
         this.playerTotalVal = totalValue(this.playersPoints);
+        this.updateAmount = true;
         console.log("player", this.playersPoints, this.playerTotalVal);
         gameState.playersCard = false;
         this.deckIndex++;
@@ -161,6 +162,7 @@ class deal extends Phaser.Scene {
             }
           }
         this.dealerTotalVal = totalValue(this.dealersPoints);
+        this.updateAmount = true;
         console.log("dealer", this.dealersPoints, this.dealerTotalVal);
         this.deckIndex++;
         this.dealerCardCount++;
@@ -199,7 +201,11 @@ class deal extends Phaser.Scene {
       hitButton.disableInteractive();
       stayButton.disableInteractive();
       this.scene.addCard();
-      console.log(this.dealersPoints);
+      while (this.scene.dealersPoints[0] || this.scene.dealersPoints[1]) {
+        setTimeout(() => {
+          this.scene.addCard();
+        }, 3000);
+      }
     });
     this.add.text((configWidth / 2) + 75, configHeight - 60, 'Stay', {
       fill: "#ffffff",
@@ -207,7 +213,7 @@ class deal extends Phaser.Scene {
       align: "center",
     });
     
-    this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {
+    this.text = this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {
       fill: "#ffffff",
       fontSize: "24px",
       align: "center",
@@ -217,6 +223,16 @@ class deal extends Phaser.Scene {
 
   update ()
   {
+    if (this.updateAmount) {
+      this.text.destroy();
+      this.text = this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {
+        fill: "#ffffff",
+        fontSize: "24px",
+        align: "center",
+      }).setOrigin(0.5);
+      this.updateAmount = false;
+    }
+
     if (gameState.backCard) {
       graphics.clear();
       curve.getPoint(path.t, path.vec);
