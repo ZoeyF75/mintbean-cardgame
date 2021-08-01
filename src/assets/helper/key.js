@@ -1,4 +1,4 @@
-export function key(cardIndex) {
+function key(cardIndex) {
   let cardValue = 0;
   if (cardIndex == 0 || cardIndex == 13 || cardIndex == 26 || cardIndex == 39) {
     cardValue = 2;
@@ -27,4 +27,21 @@ export function key(cardIndex) {
   }
   
   return cardValue;
+}
+
+function totalValue(currentArray) {
+  let returnVal;
+  if (currentArray[0] == 21 || currentArray[1] == 21) {
+    returnVal = "BLACKJACK";
+  } else if (currentArray[1] == 0) { //only one value
+    returnVal = currentArray[0];
+  } else if (currentArray[1] > 0) { //two values
+    returnVal = `${currentArray[0]} or ${currentArray[1]}`
+  }
+  return returnVal;
+}
+
+export {
+  key,
+  totalValue
 }

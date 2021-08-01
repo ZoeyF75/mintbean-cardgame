@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 import { calculateBalance } from '../assets/helper/balance';
-import { key } from '../assets/helper/key';
+import { key, totalValue } from '../assets/helper/key';
 import { configHeight, configWidth } from '../assets/helper/gameStateVariables';
 let gameState = {};
 let path;
@@ -20,11 +20,9 @@ class deal extends Phaser.Scene {
     this.shuffledDeck = data.shuffledDeck
   }
   
-  create ()
+  create()
   {  
     this.add.image(configWidth / 2, configHeight / 2, 'bg').setScale(0.42); //table bg
-
-    
 
     this.chips = calculateBalance(this.betAmount); //calculates chips to display for bet
     let x = (configWidth / 2);
@@ -32,6 +30,30 @@ class deal extends Phaser.Scene {
     const circle = this.add.circle(x, y, 16, 0x90EE90);
     circle.setStrokeStyle(4, 0xefc53f);
     y -= 5;
+    this.displayChips(x,y);
+    
+    //resets after every hand
+    gameState.playersCard = true;
+    this.playersPoints = [0, 0]; //array for aces
+    this.dealersPoints = [0, 0];
+    this.playerCardCount = 0; //used for visual effects and positioning
+    this.dealerCardCount = 0;
+    this.currentCardValue = 0;
+    gameState.addcard = true;
+
+    this.addCard(); //runs 3 times for initial deal
+    setTimeout(() => {
+      this.addCard();
+    }, 3000);
+    setTimeout(() => {
+      this.addCard();
+    }, 6000);
+    setTimeout(() => { //add player buttons, after initial deal
+      this.secondDeal();
+    }, 9000);
+  }
+
+  displayChips(x, y) {
     if (this.chips.black > 0) {
       for (let i = 0; i < this.chips.black; i++) {
         this.add.image(x, y, 'blackchip').setScale(0.05);
@@ -63,51 +85,9 @@ class deal extends Phaser.Scene {
         y -= 10;
       }
     }
-
-    //resets after every hand
-    gameState.playersCard = true;
-    this.playersPoints = [0, 0]; //array for aces
-    this.dealersPoints = [0, 0];
-    this.playerCardCount = 0; //used for visual effects and positioning
-    this.dealerCardCount = 0;
-    this.currentCardValue = 0;
-    gameState.addcard = true;
-
-    this.addCard(); //runs 3 times for initial deal
-    setTimeout(() => {
-      this.addCard();
-    }, 3000);
-    setTimeout(() => {
-      this.addCard();
-    }, 6000);
-
-    setTimeout(() => { //add player buttons
-      this.hitButton = this.add.image((configWidth / 2) - 100, configHeight - 50, 'betButton').setScale(0.1).setInteractive();
-      this.add.text((configWidth / 2) - 120, configHeight - 60, 'Hit', {
-        fill: "#ffffff",
-        fontSize: "24px",
-        align: "center",
-      });
-      this.stayButton = this.add.image((configWidth / 2) + 115, configHeight - 50, 'clearButton').setScale(0.1).setInteractive();
-      this.add.text((configWidth / 2) + 85, configHeight - 60, 'Stay', {
-        fill: "#ffffff",
-        fontSize: "24px",
-        align: "center",
-      });
-
-      this.add.text((configWidth / 2), configHeight - 60, `${this.playersPoints[0]}`, {
-        fill: "#ffffff",
-        fontSize: "24px",
-        align: "center",
-      });
-    }, 9000);
-
-    // this.mysprite = this.add.sprite(200, 200, 'deck').setScale(0.5);
-    // this.add.image(200, 300, 'deck').setScale(0.5).setFrame(this.shuffledDeck[0]);
-    // this.mysprite.setFrame(this.shuffledDeck[0]);
   }
 
-  addCard () {
+  addCard() {
     gameState.backCard = this.add.image((configWidth / 2) + 300, (configHeight / 2) - 300, 'deck').setScale(0.5).setFrame(52);
     graphics = this.add.graphics();
     path = { t: 0, vec: new Phaser.Math.Vector2() };
@@ -131,9 +111,15 @@ class deal extends Phaser.Scene {
           this.playersPoints[0] += this.currentCardValue[0];
           this.playersPoints[1] += this.currentCardValue[1];
         } else {
-          this.playersPoints[0] += this.currentCardValue;
+          if (this.playersPoints[1] > 0) {
+            this.playersPoints[0] += this.currentCardValue[0];
+            this.playersPoints[1] += this.currentCardValue[0];
+          } else {
+            this.playersPoints[0] += this.currentCardValue;
+          }
         }
-        console.log("player", this.playersPoints);
+        this.playerTotalVal = totalValue(this.playersPoints);
+        console.log("player", this.playersPoints, this.playerTotalVal);
         gameState.playersCard = false;
         this.deckIndex++;
         this.playerCardCount += 15;
@@ -152,19 +138,41 @@ class deal extends Phaser.Scene {
           this.add.image((configWidth / 2) - this.dealerCardCount, (configHeight / 2) - 200, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
           gameState.backCard.destroy();
           this.currentCardValue = key(this.shuffledDeck[this.deckIndex]);
-          if (Array.isArray(this.currentCardValue)) {
+          if (this.dealersPoints[1] > 0) {
             this.dealersPoints[0] += this.currentCardValue[0];
-            this.dealersPoints[1] += this.currentCardValue[1];
+            this.dealersPoints[1] += this.currentCardValue[0];
           } else {
             this.dealersPoints[0] += this.currentCardValue;
           }
-          console.log("dealer", this.dealersPoints);
+          this.dealerTotalVal = totalValue(this.dealersPoints);
+          console.log("dealer", this.dealersPoints, this.dealerTotalVal);
           this.deckIndex++;
           this.dealerCardCount += 50;
           gameState.playersCard = true;
         }, 2100);
     }
-  
+  }
+
+  secondDeal() {
+    this.hitButton = this.add.image((configWidth / 2) - 100, configHeight - 50, 'betButton').setScale(0.1).setInteractive();
+      this.add.text((configWidth / 2) - 120, configHeight - 60, 'Hit', {
+        fill: "#ffffff",
+        fontSize: "24px",
+        align: "center",
+      });
+      this.stayButton = this.add.image((configWidth / 2) + 105, configHeight - 50, 'clearButton').setScale(0.1).setInteractive();
+      this.add.text((configWidth / 2) + 85, configHeight - 60, 'Stay', {
+        fill: "#ffffff",
+        fontSize: "24px",
+        align: "center",
+      });
+
+      this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {
+        fill: "#ffffff",
+        fontSize: "24px",
+        align: "center",
+      }).setOrigin(0.5);
+    
   }
 
   update ()
