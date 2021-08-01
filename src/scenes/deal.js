@@ -40,6 +40,7 @@ class deal extends Phaser.Scene {
     this.dealerCardCount = 0;
     this.currentCardValue = 0;
     this.updateAmount = false;
+    this.outcome = '';
 
     this.addCard(); //runs 3 times for initial deal
     setTimeout(() => {
@@ -51,7 +52,6 @@ class deal extends Phaser.Scene {
     setTimeout(() => { //add player buttons, after initial deal
       this.secondDeal();
     }, 9000);
-
   }
 
   displayChips(x, y) {
@@ -172,14 +172,14 @@ class deal extends Phaser.Scene {
   }
 
   secondDeal() {
-    let hitButton = this.add.image((configWidth / 2) - 105, configHeight - 50, 'betButton').setScale(0.1).setAlpha(0.5).setInteractive();
-      hitButton.on('pointerover', function () {
-        hitButton.setAlpha(1);
+    this.hitButton = this.add.image((configWidth / 2) - 105, configHeight - 50, 'betButton').setScale(0.1).setAlpha(0.5).setInteractive();
+      this.hitButton.on('pointerover', function () {
+        this.scene.hitButton.setAlpha(1);
       });
-      hitButton.on('pointerout', function () {
-        hitButton.setAlpha(0.5);
+      this.hitButton.on('pointerout', function () {
+        this.scene.hitButton.setAlpha(0.5);
       });
-      hitButton.on('pointerdown', function () {
+      this.hitButton.on('pointerdown', function () {
         gameState.playersCard = true;
         this.scene.addCard(); //player
       });
@@ -189,18 +189,19 @@ class deal extends Phaser.Scene {
       fontSize: "24px",
       align: "center",
     });
-    let stayButton = this.add.image((configWidth / 2) + 110, configHeight - 50, 'clearButton').setScale(0.1).setAlpha(0.5).setInteractive();
-    stayButton.on('pointerover', function () {
-      stayButton.setAlpha(1);
+    this.stayButton = this.add.image((configWidth / 2) + 110, configHeight - 50, 'clearButton').setScale(0.1).setAlpha(0.5).setInteractive();
+    this.stayButton.on('pointerover', function () {
+      this.scene.stayButton.setAlpha(1);
     });
-    stayButton.on('pointerout', function () {
-      stayButton.setAlpha(0.5);
+    this.stayButton.on('pointerout', function () {
+      this.scene.stayButton.setAlpha(0.5);
     });
-    stayButton.on('pointerdown', function () {
+    this.stayButton.on('pointerdown', function () {
       gameState.playersCard = false;
-      hitButton.disableInteractive();
-      stayButton.disableInteractive();
-      this.scene.playersPoints[0] > this.scene.playersPoints[1] ? this.scene.playerTotalVal = this.scene.playersPoints[0] : this.scene.playerTotalVal = this.scene.playersPoints[1];
+      this.scene.disableFunctionality();
+      if (this.scene.playerTotalVal != "BLACKJACK") {
+        this.scene.playersPoints[0] > this.scene.playersPoints[1] ? this.scene.playerTotalVal = this.scene.playersPoints[0] : this.scene.playerTotalVal = this.scene.playersPoints[1];
+      }
       this.scene.updateAmount = true;
       this.scene.addCard();
       this.scene.calculateDealerHand();
@@ -226,12 +227,80 @@ class deal extends Phaser.Scene {
     }, 3000);
   }
 
-  update ()
-  {
-    if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17) {
-      clearInterval(this.dealerInterval);
+  disableFunctionality(text) {
+    this.hitButton.disableInteractive();
+    this.stayButton.disableInteractive();
+    if (text) {
+      this.outcomeText = this.add.text(configWidth / 2, (configHeight / 2) - 75, `${text}`, {
+        fill: "#FFD700",
+        fontSize: "24px",
+        align: "center",
+      }).setOrigin(0.5);
+      // setTimeout(() => {
+      //   this.scene.start("outcome", {
+      //   balance : this.balance,
+      //   deckIndex : this.deckIndex,
+      //   shuffledDeck : this.shuffledDeck
+      // });
+      //   this.scene.remove("deal");
+      // }, 3000);
+    }
+  }
+
+  configureOutcome() {
+    if (this.dealerTotalVal != 'BLACKJACK') { // calculate dealer final val
+      if (this.dealersPoints[1] != 0) {
+        if (this.dealersPoints[1] <= 21 && this.dealersPoints[1] > this.dealersPoints[0]) {
+          this.dealerTotalVal = this.dealersPoints[1];
+        } else {
+          this.dealerTotalVal = this.dealersPoints[0];
+        }
+      }
     }
 
+    if (this.playerTotalVal == 'BLACKJACK') {
+      if (this.dealerTotalVal == 'BLACKJACK') {
+        this.outcome = "standoff";
+      } else {
+        this.outcome = "pay";
+      }
+    } else if (this.dealerTotalVal == 'BLACKJACK' && this.playerTotalVal != "BLACKJACK") {
+        this.outcome = "take";
+    } else {
+      if (this.playerTotalVal > this.dealerTotalVal) {
+        this.outcome = "pay";
+      } else if (this.playerTotalVal == this.dealerTotalVal) {
+        this.outcome = "standoff";
+      } else if (this.playerTotalVal < this.dealerTotalVal) {
+        if (this.dealerTotalVal > 21) {
+          this.outcome = "bust";
+        } else {
+          this.outcome = "take";
+        }
+      }
+    }
+    this.disableFunctionality(`––––––––––– ${this.outcome} –––––––––––`);
+  }
+
+  update()
+  {
+    if (!this.outcome) { //ensures text doesn't keep recreating itself
+      if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17) {
+        clearInterval(this.dealerInterval);
+        this.configureOutcome();
+      }
+  
+      if (this.playersPoints[1] == 0 && this.playersPoints[0] > 21) { //player bust
+        this.disableFunctionality('––––––––––– BUST –––––––––––');
+        this.outcome = "bust";
+      } else if (this.playersPoints[0] > 21 && this.playersPoints[1] > 21) {
+        this.disableFunctionality('––––––––––– BUST –––––––––––');
+        this.outcome = "bust";
+      } if (this.playersTotalValue == "BLACKJACK" && this.dealersPoints[0] < 10 && this.dealersPoints[1] < 10) {
+        this.disableFunctionality('––––––––––– BLACKJACK –––––––––––')
+      }
+    }
+    
     if (this.updateAmount && this.text) {
       this.text.destroy();
       this.text = this.add.text((configWidth / 2), configHeight - 50, `${this.playerTotalVal}`, {

@@ -35,8 +35,10 @@ function totalValue(currentArray, numOfAdditionalCards) {
     numOfAdditionalCards == 1 ? returnVal = "BLACKJACK" : returnVal = 21;
   } else if (currentArray[1] == 0) { //only one value
     returnVal = currentArray[0];
-  } else if (currentArray[1] > 0) { //two values
+  } else if (currentArray[1] > 0 && currentArray[1] <= 21) { //two values
     returnVal = `${currentArray[0]} or ${currentArray[1]}`
+  } else if (currentArray[1] > 0 && currentArray[1] >= 21) { //two values, one bust
+    returnVal = currentArray[0];
   }
   return returnVal;
 }
