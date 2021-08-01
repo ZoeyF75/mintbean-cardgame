@@ -220,15 +220,16 @@ class deal extends Phaser.Scene {
   }
 
   calculateDealerHand() {
-    gameState.dealerInterval = setInterval(() => {
-      console.log("runs");
+    this.dealerInterval = setInterval(() => {
+      gameState.playersCard = false;
+      this.addCard();
     }, 3000);
   }
 
   update ()
   {
-    if (this.dealersPoints[0] <= 17 || this.dealersPoints[1] <= 17) {
-      clearInterval(gameState.dealerInterval);
+    if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17) {
+      clearInterval(this.dealerInterval);
     }
 
     if (this.updateAmount && this.text) {
