@@ -157,7 +157,7 @@ class bet extends Phaser.Scene {
     blc.on('pointerover', function (event) {
       blc.alpha = 1;
     });
-    rc.on('pointerout', function (event) {
+    blc.on('pointerout', function (event) {
       blc.alpha = 0.5;
     });
     blc.on('pointerdown', function (pointer) {

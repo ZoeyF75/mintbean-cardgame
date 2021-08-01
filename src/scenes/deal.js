@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import { calculateBalance } from '../assets/helper/balance';
+import { key } from '../assets/helper/key';
 import { configHeight, configWidth } from '../assets/helper/gameStateVariables';
+let gameState = {};
 let path;
 let curve;
 let points;
@@ -65,34 +67,65 @@ class deal extends Phaser.Scene {
     //     y -= 10;
     //   }
     // }
-    
-    this.backCard = this.add.image((configWidth / 2) + 300, (configHeight / 2) - 300, 'deck').setScale(0.5).setFrame(52);
-    
-    graphics = this.add.graphics();
-    path = { t: 0, vec: new Phaser.Math.Vector2() };
-    points = [];
-    points.push(new Phaser.Math.Vector2((configWidth / 2) + 300, (configHeight / 2) - 300));
-    points.push(new Phaser.Math.Vector2((configWidth / 2) + 200, configHeight - 300));
-    points.push(new Phaser.Math.Vector2((configWidth / 2) + 100, configHeight - 200));
-    points.push(new Phaser.Math.Vector2(configWidth / 2, configHeight - 150));
-    curve = new Phaser.Curves.Spline(points);
-    this.tweens.add({
-        targets: path,
-        t: 1,
-        duration: 2000,
-    });
+
+    //resets after every hand
+    gameState.xDiff = 0; 
+    gameState.ydiff = 0;
+    gameState.playersCard = true;
+    this.addCard(); //runs 3 times for sure
+    gameState.addcard = true;
+    this.playersPoints = []; //array for aces
+    this.dealersPoints = [];
+
+
     // this.mysprite = this.add.sprite(200, 200, 'deck').setScale(0.5);
     // this.add.image(200, 300, 'deck').setScale(0.5).setFrame(this.shuffledDeck[0]);
     // this.mysprite.setFrame(this.shuffledDeck[0]);
 
   }
 
+  addCard () {
+    gameState.backCard = this.add.image((configWidth / 2) + 300, (configHeight / 2) - 300, 'deck').setScale(0.5).setFrame(52);
+    graphics = this.add.graphics();
+    path = { t: 0, vec: new Phaser.Math.Vector2() };
+    points = [];
+    if (gameState.playersCard) { //animation for players stack
+      points.push(new Phaser.Math.Vector2((configWidth / 2) + 300, (configHeight / 2) - 300));
+      points.push(new Phaser.Math.Vector2((configWidth / 2) + 200, configHeight - 350));
+      points.push(new Phaser.Math.Vector2((configWidth / 2) + 100, configHeight - 300));
+      points.push(new Phaser.Math.Vector2((configWidth / 2) + gameState.xDiff, configHeight - 200 - gameState.ydiff));
+      curve = new Phaser.Curves.Spline(points);
+      this.tweens.add({
+        targets: path,
+        t: 1,
+        duration: 2000,
+      });
+      setTimeout(() => {
+        this.add.image((configWidth / 2) + gameState.xDiff, configHeight - 200 - gameState.ydiff, 'deck').setScale(0.5).setFrame(this.shuffledDeck[this.deckIndex]);
+        gameState.backCard.destroy();
+      }, 2100);
+      this.deckIndex++;
+      gameState.xDiff += 10;
+      gameState.ydiff += 10;
+      gameState.playersCard = false;
+      
+    } else { //animation for dealers hand
+
+    }
+  
+  }
+
   update ()
   {
-    graphics.clear();
-    curve.getPoint(path.t, path.vec);
-    this.backCard.x = path.vec.x;
-    this.backCard.y = path.vec.y;
+    if (gameState.addcard) {
+      console.log("runs");
+      graphics.clear();
+      curve.getPoint(path.t, path.vec);
+      gameState.backCard.x = path.vec.x;
+      gameState.backCard.y = path.vec.y;
+      this.gameState.addcard = false;
+    }
+    
   }
 }
 
