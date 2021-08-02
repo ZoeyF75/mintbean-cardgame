@@ -85,16 +85,19 @@ class outcome extends Phaser.Scene {
   displayTotal() {
     this.chips = calculateBalance(this.balance);
     let x = 0;
+
+    let ytemp = 0;
     if (this.chips.purple > 0) {
-      let y = (configHeight / 2) + 150;
+      ytemp = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.purple; i++) {
-        this.add.image(configWidth / 2, y, 'purplechip').setScale(0.15).setOrigin(0.5);
-        y -= 20;
+        this.add.image(configWidth / 2, ytemp, 'purplechip').setScale(0.15).setOrigin(0.5);
+        ytemp -= 20;
       }
     }
     if (this.chips.black > 0) {
       x = this.findx(x);
-      let y = (configHeight / 2) + 150;
+      let y;
+      ytemp > 0 ? y = ytemp: y = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.black; i++) {
         this.add.image(x, y, 'blackchip').setScale(0.15).setOrigin(0.5);
         y -= 20;

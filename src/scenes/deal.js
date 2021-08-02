@@ -294,6 +294,8 @@ class deal extends Phaser.Scene {
 
   update()
   {
+
+    if (this.outcome) clearInterval(this.dealerInterval);
     if (!this.outcome) { //ensures text doesn't keep recreating itself
       if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17 && this.dealersPoints[1] <= 21 ) {
         clearInterval(this.dealerInterval);
