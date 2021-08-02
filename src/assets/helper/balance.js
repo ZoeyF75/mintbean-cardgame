@@ -1,5 +1,6 @@
 function calculateBalance(balance) {
   let chips = {
+    purple: 0,
     black: 0,
     green: 0,
     red: 0,
@@ -7,7 +8,10 @@ function calculateBalance(balance) {
     white: 0,
     tan: 0
   }
-
+  if (balance / 500 >= 1) {
+    chips.purple += Math.floor(balance / 500);
+    balance -= (Math.floor(balance / 500)) * 500;
+  }
   if (balance / 100 >= 1) {
     chips.black += Math.floor(balance / 100);
     balance -= (Math.floor(balance / 100)) * 100;

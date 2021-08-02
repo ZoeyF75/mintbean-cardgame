@@ -13,7 +13,6 @@ class newShoe extends Phaser.Scene {
   
   create() {
     this.changeScene = '';
-    console.log(this.balance);
     this.previousBalance = this.add.text(configWidth / 2, configHeight / 2, `Would you like to play another shoe?`, {
       fill: "#ffffff",
       fontSize: "24px",
@@ -57,8 +56,7 @@ class newShoe extends Phaser.Scene {
   update() {
     console.log(this.changeScene);
     if (this.changeScene == 'start'){
-      this.scene.sleep('newShoe');
-      this.scene.start('intro');
+      location.reload();
     } else if (this.changeScene == 'bet') {
       this.scene.start("bet", {
         balance : this.balance,

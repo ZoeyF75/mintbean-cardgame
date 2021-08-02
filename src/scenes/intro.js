@@ -35,6 +35,7 @@ class intro extends Phaser.Scene {
     this.mysprite.play("animation");
 
     const shuffledDeck = createDeck(); //returns array of shuffled deck
+    // const shuffledDeck = [12,11,11,12,3,4,5];
     this.input.on("pointerdown", () => {
       this.scene.start("bet", {
         balance : 350,

@@ -9,6 +9,7 @@ import greenchip from '../assets/greenchip.png';
 import bluechip from '../assets/bluechip.png';
 import blackchip from '../assets/blackchip.png';
 import whitechip from '../assets/whitechip.png';
+import purplechip from '../assets/purplechip.png';
 import fiftycents from '../assets/50cent.png';
 import betButton from '../assets/betButton.png';
 import clearButton from '../assets/button.png';
@@ -35,6 +36,7 @@ class preloader extends Phaser.Scene {
     this.load.image('redchip', redchip);
     this.load.image('greenchip', greenchip);
     this.load.image('blackchip', blackchip);
+    this.load.image('purplechip', purplechip);
     this.load.image('fiftycents', fiftycents);
     this.load.image('betButton', betButton);
     this.load.image('clearButton', clearButton);

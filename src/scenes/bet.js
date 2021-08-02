@@ -37,6 +37,13 @@ class bet extends Phaser.Scene {
 
     this.chips = calculateBalance(this.balance);
     let x = 0;
+    if (this.chips.purple > 0) {
+      let y = (configHeight / 2) + 150;
+      for (let i = 0; i < this.chips.purple; i++) {
+        this.add.image(x + 60, y, 'purplechip').setScale(0.15);
+        y -= 20;
+      }
+    }
     if (this.chips.black > 0) {
       x == 0 ? x = 60 : x += 100;
       let y = (configHeight / 2) + 150;

@@ -39,7 +39,9 @@ class outcome extends Phaser.Scene {
 
     setTimeout(() => {
       this.previousBalance.destroy();
-      this.addition.destroy();
+      if (this.addition) {
+        this.addition.destroy();
+      }
       this.cameras.main.flash();
       this.add.text(configWidth / 2, (configHeight / 2) - 150, `$${this.balance}`, {
       fill: "#FFD700",
@@ -83,6 +85,13 @@ class outcome extends Phaser.Scene {
   displayTotal() {
     this.chips = calculateBalance(this.balance);
     let x = 0;
+    if (this.chips.purple > 0) {
+      let y = (configHeight / 2) + 150;
+      for (let i = 0; i < this.chips.purple; i++) {
+        this.add.image(configWidth / 2, y, 'purplechip').setScale(0.15).setOrigin(0.5);
+        y -= 20;
+      }
+    }
     if (this.chips.black > 0) {
       x = this.findx(x);
       let y = (configHeight / 2) + 150;
