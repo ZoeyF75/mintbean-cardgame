@@ -1,7 +1,7 @@
 import Phaser, { Game } from 'phaser';
 import { configWidth, configHeight } from '../assets/helper/gameStateVariables';
 import { calculateBalance } from '../assets/helper/balance';
-let gameState = { changeScene : false };
+let gameState = { changeScene : '' };
 
 class bet extends Phaser.Scene {
   constructor(){
@@ -16,6 +16,17 @@ class bet extends Phaser.Scene {
   
   create() {
     this.add.image(configWidth / 2, configHeight / 2, 'bg');
+
+    const quitButton = this.add.image((configWidth / 2) - 100, 50, 'quit').setScale(0.12).setAlpha(0.5).setInteractive();
+    quitButton.on('pointerover', function () {
+      quitButton.alpha = 1;
+    });
+    quitButton.on('pointerout', function () {
+      quitButton.alpha = 0.5;
+    });
+    quitButton.on('pointerdown', function () {
+      gameState.changeScene = 'intro';
+    });
 
     this.add.text((configWidth / 2) - 350, (configHeight / 2) - 250, `Your balance: $${this.balance}`, {
       fill: "#ffffff",
@@ -183,7 +194,7 @@ class bet extends Phaser.Scene {
     });
     betB.on('pointerdown', function () {
       //change scene
-      gameState.changeScene = true;
+      gameState.changeScene = 'deal';
     });
     this.add.text((configWidth / 2) - 170, configHeight - 60, 'Bet', {
       fill: "#ffffff",
@@ -222,15 +233,18 @@ class bet extends Phaser.Scene {
       gameState.updateAmount = false;
     }
 
-    if (gameState.changeScene) {
-      gameState.changeScene = false;
+    if (gameState.changeScene == 'deal') {
+      this.scene.sleep("bet");
+      gameState.changeScene = '';
       this.scene.start("deal", {
         balance : this.balance,
         betAmount : gameState.betAmount,
         deckIndex : this.deckIndex,
         shuffledDeck : this.shuffledDeck
       });
+    } else if (gameState.changeScene == 'intro') {
       this.scene.sleep("bet");
+      this.scene.start("intro");
     }
   }
    

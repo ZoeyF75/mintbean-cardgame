@@ -12,6 +12,7 @@ import whitechip from '../assets/whitechip.png';
 import fiftycents from '../assets/50cent.png';
 import betButton from '../assets/betButton.png';
 import clearButton from '../assets/button.png';
+import quit from '../assets/quit.png';
 
 import gameover from '../assets/gameover.png';
 import pixel from '../assets/16x16.png';
@@ -37,13 +38,14 @@ class preloader extends Phaser.Scene {
     this.load.image('fiftycents', fiftycents);
     this.load.image('betButton', betButton);
     this.load.image('clearButton', clearButton);
+    this.load.image('quit', quit);
 
     this.load.image('gameover', gameover);
     this.load.image('pixel', pixel);
   }
 
   create() {
-    this.scene.start('newShoe');
+    this.scene.start('intro');
   }
 }
 

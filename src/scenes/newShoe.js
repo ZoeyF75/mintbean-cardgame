@@ -12,6 +12,8 @@ class newShoe extends Phaser.Scene {
   }
   
   create() {
+    this.changeScene = '';
+    console.log(this.balance);
     this.previousBalance = this.add.text(configWidth / 2, configHeight / 2, `Would you like to play another shoe?`, {
       fill: "#ffffff",
       fontSize: "24px",
@@ -26,12 +28,7 @@ class newShoe extends Phaser.Scene {
       yes.setScale(0.12);
     });
     yes.on('pointerdown', function () {
-      this.scene.start("bet", {
-        balance : this.balance,
-        deckIndex : 0,
-        shuffledDeck : this.shuffledDeck,
-      });
-      this.scene.remove("newShoe");
+      this.scene.changeScene = 'bet';
     });
     this.add.text((configWidth / 2) - 170, configHeight - 60, 'Yes', {
       fill: "#ffffff",
@@ -48,13 +45,28 @@ class newShoe extends Phaser.Scene {
       no.setScale(0.12);
     });
     no.on('pointerdown', function () {
-      this.scene.start('intro');
+      this.scene.changeScene = 'start';
     });
-    this.add.text((configWidth / 2) + 120, configHeight - 60, 'No', {
+    this.add.text((configWidth / 2) + 125, configHeight - 60, 'No', {
       fill: "#ffffff",
       fontSize: "24px",
       align: "center",
     });
+  }
+
+  update() {
+    console.log(this.changeScene);
+    if (this.changeScene == 'start'){
+      this.scene.sleep('newShoe');
+      this.scene.start('intro');
+    } else if (this.changeScene == 'bet') {
+      this.scene.start("bet", {
+        balance : this.balance,
+        deckIndex : 0,
+        shuffledDeck : this.shuffledDeck,
+      });
+      this.scene.sleep("newShoe");
+    }
   }
 }
 

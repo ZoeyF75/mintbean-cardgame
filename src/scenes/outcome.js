@@ -50,23 +50,23 @@ class outcome extends Phaser.Scene {
 
     setTimeout(() => {
       if (this.balance < 15) {
+        this.scene.sleep("outcome");
         this.scene.start("gameover");
-        this.scene.remove("outcome");
       } else if (this.deckIndex >= 156) {
         const shuffledDeck = createDeck(); //returns array of shuffled deck
+        this.scene.sleep("outcome");
         this.scene.start("newShoe", {
           balance : this.balance,
           deckIndex : 0,
           shuffledDeck,
         });
-        this.scene.sleep("outcome");
       } else {
+        this.scene.sleep("outcome");
         this.scene.start("bet", {
           balance : this.balance,
           deckIndex : this.deckIndex,
           shuffledDeck : this.shuffledDeck,
         });
-        this.scene.sleep("outcome");
       }
     }, 6000)
   }
