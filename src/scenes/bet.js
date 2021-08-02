@@ -223,13 +223,14 @@ class bet extends Phaser.Scene {
     }
 
     if (gameState.changeScene) {
+      gameState.changeScene = false;
       this.scene.start("deal", {
         balance : this.balance,
         betAmount : gameState.betAmount,
         deckIndex : this.deckIndex,
         shuffledDeck : this.shuffledDeck
       });
-      this.scene.remove("bet");
+      this.scene.sleep("bet");
     }
   }
    

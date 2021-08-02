@@ -245,7 +245,7 @@ class deal extends Phaser.Scene {
         outcome : this.outcome,
         bet : this.betAmount
       });
-        this.scene.remove("deal");
+        this.scene.sleep("deal");
       }, 6000);
     }
   }

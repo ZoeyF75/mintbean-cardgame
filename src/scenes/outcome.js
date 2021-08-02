@@ -66,9 +66,9 @@ class outcome extends Phaser.Scene {
           deckIndex : this.deckIndex,
           shuffledDeck : this.shuffledDeck,
         });
-        this.scene.remove("outcome");
+        this.scene.sleep("outcome");
       }
-    })
+    }, 6000)
   }
 
   displayText(change, colour) {
