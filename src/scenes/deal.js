@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 import { calculateBalance } from '../assets/helper/balance';
 import { key, totalValue } from '../assets/helper/key';
 import { configHeight, configWidth } from '../assets/helper/gameStateVariables';
-let gameState = {stop : false};
+let gameState = {};
 let path;
 let curve;
 let points;
@@ -34,6 +34,7 @@ class deal extends Phaser.Scene {
     
     //resets after every hand
     gameState.playersCard = true;
+    gameState.stop = false;
     this.playersPoints = [0, 0]; //array for aces
     this.dealersPoints = [0, 0];
     this.playerCardCount = 0; //used for visual effects and positioning
@@ -41,6 +42,7 @@ class deal extends Phaser.Scene {
     this.currentCardValue = 0;
     this.updatePlayerAmount = false;
     this.updateDealerAmount = false;
+    this.playerTotalVal = 0;
     this.outcome = '';
 
     this.addCard(); //runs 3 times for initial deal
@@ -219,11 +221,11 @@ class deal extends Phaser.Scene {
   }
 
   calculateDealerHand() {
-    this.updateDealerAmount = true;
-
     this.dealerInterval = setInterval(() => {
       gameState.playersCard = false;
       this.addCard();
+      this.updateDealerAmount = true;
+      this.updatePlayerAmount = true;
     }, 3000);
   }
 
@@ -242,6 +244,7 @@ class deal extends Phaser.Scene {
       }).setOrigin(0.5);
       setTimeout(() => this.cameras.main.fadeOut(3000, 0, 0, 0), 3000)
       setTimeout(() => {
+        this.scene.sleep("deal");
         this.playerText.destroy();
         this.scene.start("outcome", {
         balance : this.balance,
@@ -250,7 +253,6 @@ class deal extends Phaser.Scene {
         outcome : this.outcome,
         bet : this.betAmount
       });
-        this.scene.sleep("deal");
       }, 6000);
     }
   }
@@ -296,7 +298,10 @@ class deal extends Phaser.Scene {
       if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17 && this.dealersPoints[1] <= 21 ) {
         clearInterval(this.dealerInterval);
         this.configureOutcome();
-      }
+      } else if (this.playerTotalVal == "BLACKJACK" && this.dealersPoints[0] > 11 || this.dealersPoints[1] > 11) {
+        clearInterval(this.dealerInterval);
+        this.configureOutcome();
+      } 
 
       if (this.playersPoints[1] == 0 && this.playersPoints[0] > 21) { //player bust
         this.disableFunctionality('––––––––––– BUST –––––––––––');
@@ -310,7 +315,6 @@ class deal extends Phaser.Scene {
       } else if (this.playerTotalVal == "BLACKJACK" && this.dealersPoints[0] >= 10 || this.dealersPoints[1] >= 10) {
         if (!gameState.stop) {
           this.disableFunctionality();
-          this.updatePlayerAmount = true;
           this.calculateDealerHand();
         }
         gameState.stop = true;
