@@ -59,7 +59,7 @@ class outcome extends Phaser.Scene {
           deckIndex : 0,
           shuffledDeck,
         });
-        this.scene.remove("outcome");
+        this.scene.sleep("outcome");
       } else {
         this.scene.start("bet", {
           balance : this.balance,
@@ -108,7 +108,7 @@ class outcome extends Phaser.Scene {
       }
     }
     if (this.chips.blue > 0) {
-      x = findx(x);
+      x = this.findx(x);
       let y = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.blue; i++) {
         this.add.image(x, y, 'bluechip').setScale(0.15);

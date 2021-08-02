@@ -49,7 +49,7 @@ class deal extends Phaser.Scene {
     setTimeout(() => {
       this.addCard();
     }, 6000);
-    setTimeout(() => { //add player buttons, after initial deal
+    this.time = setTimeout(() => { //add player buttons, after initial deal
       this.secondDeal();
     }, 9000);
   }
@@ -238,6 +238,8 @@ class deal extends Phaser.Scene {
       }).setOrigin(0.5);
       setTimeout(() => this.cameras.main.fadeOut(3000, 0, 0, 0), 3000)
       setTimeout(() => {
+        this.text.destroy();
+        clearInterval(this.time);
         this.scene.start("outcome", {
         balance : this.balance,
         deckIndex : this.deckIndex,
