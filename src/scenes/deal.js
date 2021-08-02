@@ -199,8 +199,13 @@ class deal extends Phaser.Scene {
     this.stayButton.on('pointerdown', function () {
       gameState.playersCard = false;
       this.scene.disableFunctionality();
+      
       if (this.scene.playerTotalVal != "BLACKJACK") {
-        this.scene.playersPoints[0] > this.scene.playersPoints[1] ? this.scene.playerTotalVal = this.scene.playersPoints[0] : this.scene.playerTotalVal = this.scene.playersPoints[1];
+        if (this.scene.playersPoints[0] > this.scene.playersPoints[1]) {
+          this.scene.playerTotalVal = this.scene.playersPoints[0]
+        } else {
+          this.scene.playersPoints[1] > 21 ? this.scene.playerTotalVal = this.scene.playersPoints[0] : this.scene.playerTotalVal = this.scene.playersPoints[1];
+        }
       }
       this.scene.updatePlayerAmount = true;
       this.scene.addCard();
