@@ -1,3 +1,5 @@
+import { configWidth, configHeight } from '../assets/helper/gameStateVariables';
+
 class gameover extends Phaser.Scene {
   constructor(){
 		super({ key: 'gameover' })
@@ -5,69 +7,68 @@ class gameover extends Phaser.Scene {
   
   create() {
     //as seen in phaser2 pixel wave example
-    const source = this.textures.get('gameover').source[0].image;
-        const canvas = this.textures.createCanvas('pad', 38, 42).source[0].image;
-        const ctx = canvas.getContext('2d');
+      this.add.image(configWidth / 2, configHeight / 2, 'bg');
+     
+      const source = this.textures.get('gameover').source[0].image;
+      const canvas = this.textures.createCanvas('pad', 38, 42).source[0].image;
+      const ctx = canvas.getContext('2d');
+      
+      ctx.drawImage(source, 0, 0);
 
-        ctx.drawImage(source, 0, 0);
+      const imageData = ctx.getImageData(0, 0, 38, 42);
 
-        const imageData = ctx.getImageData(0, 0, 38, 42);
+      let x = 0;
+      let y = 0;
+      const color = new Phaser.Display.Color();
 
-        let x = 0;
-        let y = 0;
-        const color = new Phaser.Display.Color();
+      for (var i = 0; i < imageData.data.length; i += 4)
+      {
+        const r = imageData.data[i];
+        const g = imageData.data[i + 1];
+        const b = imageData.data[i + 2];
+        const a = imageData.data[i + 3];
 
-        for (var i = 0; i < imageData.data.length; i += 4)
+        if (a > 0)
         {
-            const r = imageData.data[i];
-            const g = imageData.data[i + 1];
-            const b = imageData.data[i + 2];
-            const a = imageData.data[i + 3];
+          const startX = Phaser.Math.Between(0, 1024);
+          const startY = Phaser.Math.Between(0, 768);
 
-            if (a > 0)
-            {
-                // var startX = 1024/2;
-                // var startY = 800;
+          const dx = 160 + x * 13;
+          const dy = 45 + y * 13;
 
-                const startX = Phaser.Math.Between(0, 1024);
-                const startY = Phaser.Math.Between(0, 768);
+          const image = this.add.image(startX, startY, 'pixel').setScale(0);
 
-                const dx = 200 + x * 16;
-                const dy = 64 + y * 16;
+          color.setTo(r, g, b, a);
 
-                const image = this.add.image(startX, startY, 'pixel').setScale(0);
+          image.setTint(color.color);
 
-                color.setTo(r, g, b, a);
+          this.tweens.add({
 
-                image.setTint(color.color);
+            targets: image,
+            duration: 2000,
+            x: dx,
+            y: dy,
+            scaleX: 1,
+            scaleY: 1,
+            angle: 360,
+            delay: i / 1.5,
+            yoyo: true,
+            repeat: -1,
+            repeatDelay: 6000,
+            hold: 6000
 
-                this.tweens.add({
+          });
+        }
 
-                    targets: image,
-                    duration: 2000,
-                    x: dx,
-                    y: dy,
-                    scaleX: 1,
-                    scaleY: 1,
-                    angle: 360,
-                    delay: i / 1.5,
-                    yoyo: true,
-                    repeat: -1,
-                    repeatDelay: 6000,
-                    hold: 6000
+        x++;
 
-                });
-            }
-
-            x++;
-
-            if (x === 38)
-            {
-                x = 0;
-                y++;
-            }
+        if (x === 38)
+        {
+          x = 0;
+          y++;
         }
     }
   }
+}
 
 export default gameover;
