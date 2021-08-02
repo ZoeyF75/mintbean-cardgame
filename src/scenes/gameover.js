@@ -1,3 +1,4 @@
+import { configHeight, configWidth } from '../assets/helper/gameStateVariables';
 class gameover extends Phaser.Scene {
   constructor(){
 		super({ key: 'gameover' })
@@ -17,7 +18,7 @@ class gameover extends Phaser.Scene {
      quitButton.on('pointerdown', function () {
        location.reload();
      });
-     
+
       const source = this.textures.get('gameover').source[0].image;
       const canvas = this.textures.createCanvas('pad', 38, 42).source[0].image;
       const ctx = canvas.getContext('2d');
