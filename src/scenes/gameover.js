@@ -6,6 +6,18 @@ class gameover extends Phaser.Scene {
   create() {
     //as seen in phaser3 pixel wave example
      this.cameras.main.setBackgroundColor('#ffffff');
+
+     const quitButton = this.add.image(configWidth - 50, 25, 'quit').setScale(0.12).setAlpha(0.5).setInteractive();
+     quitButton.on('pointerover', function () {
+       quitButton.alpha = 1;
+     });
+     quitButton.on('pointerout', function () {
+       quitButton.alpha = 0.5;
+     });
+     quitButton.on('pointerdown', function () {
+       location.reload();
+     });
+     
       const source = this.textures.get('gameover').source[0].image;
       const canvas = this.textures.createCanvas('pad', 38, 42).source[0].image;
       const ctx = canvas.getContext('2d');

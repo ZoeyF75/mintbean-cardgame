@@ -27,7 +27,7 @@ class deal extends Phaser.Scene {
     this.chips = calculateBalance(this.betAmount); //calculates chips to display for bet
     let x = (configWidth / 2);
     let y = configHeight - 200;
-    const circle = this.add.circle(x, y, 16, 0xc1E499);
+    const circle = this.add.circle(x, y, 16, 0x90EE90);
     circle.setStrokeStyle(4, 0xefc53f);
     y -= 5;
     this.displayChips(x,y);

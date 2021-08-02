@@ -25,6 +25,7 @@ class bet extends Phaser.Scene {
       quitButton.alpha = 0.5;
     });
     quitButton.on('pointerdown', function () {
+      location.reload();
       gameState.changeScene = 'intro';
     });
 
