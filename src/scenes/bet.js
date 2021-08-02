@@ -17,7 +17,7 @@ class bet extends Phaser.Scene {
   create() {
     this.add.image(configWidth / 2, configHeight / 2, 'bg');
 
-    const quitButton = this.add.image((configWidth / 2) - 100, 50, 'quit').setScale(0.12).setAlpha(0.5).setInteractive();
+    const quitButton = this.add.image(configWidth - 50, 25, 'quit').setScale(0.12).setAlpha(0.5).setInteractive();
     quitButton.on('pointerover', function () {
       quitButton.alpha = 1;
     });
@@ -233,7 +233,7 @@ class bet extends Phaser.Scene {
       gameState.updateAmount = false;
     }
 
-    if (gameState.changeScene == 'deal') {
+    if(gameState.changeScene == 'deal') {
       this.scene.sleep("bet");
       gameState.changeScene = '';
       this.scene.start("deal", {
@@ -242,7 +242,8 @@ class bet extends Phaser.Scene {
         deckIndex : this.deckIndex,
         shuffledDeck : this.shuffledDeck
       });
-    } else if (gameState.changeScene == 'intro') {
+    } else if(gameState.changeScene == 'intro') {
+      gameState.changeScene = '';
       this.scene.sleep("bet");
       this.scene.start("intro");
     }

@@ -41,7 +41,7 @@ class intro extends Phaser.Scene {
         deckIndex : 0,
         shuffledDeck
       });
-      this.scene.remove("intro");
+      this.scene.sleep("intro");
       clearTimeout(this.time);
     });
   }
