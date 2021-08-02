@@ -5,7 +5,7 @@ import deck from '../assets/deck.png'; //0 - 51 frames, 52 is backside
 
 import background from '../assets/table.jpeg';
 import redchip from '../assets/chips.png';
-import greenchip from '../assets/greenchip.png';
+import greenchip from '../assets/greenchip2.png';
 import bluechip from '../assets/bluechip.png';
 import blackchip from '../assets/blackchip.png';
 import whitechip from '../assets/whitechip.png';

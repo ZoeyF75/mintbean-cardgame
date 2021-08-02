@@ -294,13 +294,12 @@ class deal extends Phaser.Scene {
 
   update()
   {
-
     if (this.outcome) clearInterval(this.dealerInterval);
     if (!this.outcome) { //ensures text doesn't keep recreating itself
-      if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17 && this.dealersPoints[1] <= 21 ) {
+      if (this.dealersPoints[0] >= 17 || (this.dealersPoints[1] >= 17 && this.dealersPoints[1] <= 21)) {
         clearInterval(this.dealerInterval);
         this.configureOutcome();
-      } else if (this.playerTotalVal == "BLACKJACK" && this.dealersPoints[0] > 11 || this.dealersPoints[1] > 11) {
+      } else if (this.playerTotalVal == "BLACKJACK" && (this.dealersPoints[0] > 11 || this.dealersPoints[1] > 11)) {
         clearInterval(this.dealerInterval);
         this.configureOutcome();
       } 
@@ -314,7 +313,7 @@ class deal extends Phaser.Scene {
       } else if (this.playerTotalVal == "BLACKJACK" && this.dealersPoints[0] < 10 && this.dealersPoints[1] < 10) {
         this.disableFunctionality('––––––––––– BLACKJACK –––––––––––')
         this.outcome = "BLACKJACK";
-      } else if (this.playerTotalVal == "BLACKJACK" && this.dealersPoints[0] >= 10 || this.dealersPoints[1] >= 10) {
+      } else if (this.playerTotalVal == "BLACKJACK" && (this.dealersPoints[0] >= 10 || this.dealersPoints[1] >= 10)) {
         if (!gameState.stop) {
           this.disableFunctionality();
           this.calculateDealerHand();

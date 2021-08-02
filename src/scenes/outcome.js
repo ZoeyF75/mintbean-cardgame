@@ -85,8 +85,8 @@ class outcome extends Phaser.Scene {
   displayTotal() {
     this.chips = calculateBalance(this.balance);
     let x = 0;
-
     let ytemp = 0;
+
     if (this.chips.purple > 0) {
       ytemp = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.purple; i++) {
@@ -97,12 +97,13 @@ class outcome extends Phaser.Scene {
     if (this.chips.black > 0) {
       x = this.findx(x);
       let y;
-      ytemp > 0 ? y = ytemp: y = (configHeight / 2) + 150;
+      this.chips.purple > 1 ? y = ytemp: y = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.black; i++) {
         this.add.image(x, y, 'blackchip').setScale(0.15).setOrigin(0.5);
         y -= 20;
       }
     }
+
     if (this.chips.green > 0) {
       x = this.findx(x);
       let y = (configHeight / 2) + 150;
@@ -128,7 +129,7 @@ class outcome extends Phaser.Scene {
       }
     }
 
-    let y = (configHeight / 2) + 150; //50 cents will stack on top on ones if they exsist
+    let y = (configHeight / 2) + 150; //50 cents will stack on top on ones if they exist
     if (this.chips.white > 0) {
       x = this.findx(x);
       for (let i = 0; i < this.chips.white; i++) {
