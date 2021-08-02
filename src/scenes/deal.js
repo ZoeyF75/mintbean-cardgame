@@ -236,14 +236,17 @@ class deal extends Phaser.Scene {
         fontSize: "24px",
         align: "center",
       }).setOrigin(0.5);
-      // setTimeout(() => {
-      //   this.scene.start("outcome", {
-      //   balance : this.balance,
-      //   deckIndex : this.deckIndex,
-      //   shuffledDeck : this.shuffledDeck
-      // });
-      //   this.scene.remove("deal");
-      // }, 3000);
+      setTimeout(() => this.cameras.main.fadeOut(3000, 0, 0, 0), 3000)
+      setTimeout(() => {
+        this.scene.start("outcome", {
+        balance : this.balance,
+        deckIndex : this.deckIndex,
+        shuffledDeck : this.shuffledDeck,
+        outcome : this.outcome,
+        bet : this.betAmount
+      });
+        this.scene.remove("deal");
+      }, 6000);
     }
   }
 
@@ -262,7 +265,7 @@ class deal extends Phaser.Scene {
       if (this.dealerTotalVal == 'BLACKJACK') {
         this.outcome = "standoff";
       } else {
-        this.outcome = "pay";
+        this.outcome = "BLACKJACK";
       }
     } else if (this.dealerTotalVal == 'BLACKJACK' && this.playerTotalVal != "BLACKJACK") {
         this.outcome = "take";
@@ -273,7 +276,7 @@ class deal extends Phaser.Scene {
         this.outcome = "standoff";
       } else if (this.playerTotalVal < this.dealerTotalVal) {
         if (this.dealerTotalVal > 21) {
-          this.outcome = "bust";
+          this.outcome = "pay";
         } else {
           this.outcome = "take";
         }
@@ -285,7 +288,7 @@ class deal extends Phaser.Scene {
   update()
   {
     if (!this.outcome) { //ensures text doesn't keep recreating itself
-      if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17) {
+      if (this.dealersPoints[0] >= 17 || this.dealersPoints[1] >= 17 && this.dealersPoints[1] <= 21 ) {
         clearInterval(this.dealerInterval);
         this.configureOutcome();
       }
@@ -298,6 +301,7 @@ class deal extends Phaser.Scene {
         this.outcome = "bust";
       } if (this.playersTotalValue == "BLACKJACK" && this.dealersPoints[0] < 10 && this.dealersPoints[1] < 10) {
         this.disableFunctionality('––––––––––– BLACKJACK –––––––––––')
+        this.outcome = "BLACKJACK";
       }
     }
     

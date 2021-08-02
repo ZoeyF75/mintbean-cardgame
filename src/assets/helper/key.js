@@ -38,7 +38,7 @@ function totalValue(currentArray, numOfAdditionalCards) {
   } else if (currentArray[1] > 0 && currentArray[1] <= 21) { //two values
     returnVal = `${currentArray[0]} or ${currentArray[1]}`
   } else if (currentArray[1] > 0 && currentArray[1] >= 21) { //two values, one bust
-    returnVal = currentArray[0];
+    returnVal = currentArray[0];  
   }
   return returnVal;
 }
