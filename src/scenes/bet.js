@@ -98,70 +98,70 @@ class bet extends Phaser.Scene {
     let b = this.balance;
     //white chip
     gameState.betAmount = 15;
-    wc.on('pointerover', function (event) {
+    wc.on('pointerover', function () {
       wc.alpha = 1;
     });
-    wc.on('pointerout', function (event) {
+    wc.on('pointerout', function () {
       wc.alpha = 0.5;
     });
-    wc.on('pointerdown', function (pointer) {
-      if (gameState.betAmount + 1 <= b) {
+    wc.on('pointerdown', function () {
+      if (gameState.betAmount + 1 <= b && gameState.betAmount + 1 <= 200) {
         gameState.betAmount += 1;
         gameState.updateAmount = true;
       }
     });
 
     //blue chip
-    bc.on('pointerover', function (event) {
+    bc.on('pointerover', function () {
       bc.alpha = 1;
     });
-    bc.on('pointerout', function (event) {
+    bc.on('pointerout', function () {
       bc.alpha = 0.5;
     });
-    bc.on('pointerdown', function (pointer) {
-      if (gameState.betAmount + 2 <= b) {
+    bc.on('pointerdown', function () {
+      if (gameState.betAmount + 2 <= b && gameState.betAmount + 2 <= 200) {
         gameState.betAmount += 2;
         gameState.updateAmount = true;
       }
     });
 
     //red chip
-    rc.on('pointerover', function (event) {
+    rc.on('pointerover', function () {
       rc.alpha = 1;
     });
-    rc.on('pointerout', function (event) {
+    rc.on('pointerout', function () {
       rc.alpha = 0.5;
     });
-    rc.on('pointerdown', function (pointer) {
-      if (gameState.betAmount + 5 <= b) {
+    rc.on('pointerdown', function () {
+      if (gameState.betAmount + 5 <= b && gameState.betAmount + 5 <= 200) {
         gameState.betAmount += 5;
         gameState.updateAmount = true;
       }
     });
 
     //green chip
-    gc.on('pointerover', function (event) {
+    gc.on('pointerover', function () {
       gc.alpha = 1;
     });
-    gc.on('pointerout', function (event) {
+    gc.on('pointerout', function () {
       gc.alpha = 0.5;
     });
-    gc.on('pointerdown', function (pointer) {
-      if (gameState.betAmount + 25 <= b) {
+    gc.on('pointerdown', function () {
+      if (gameState.betAmount + 25 <= b && gameState.betAmount + 25 <= 200) {
         gameState.betAmount += 25;
         gameState.updateAmount = true;
       }
     });
 
     //black chip
-    blc.on('pointerover', function (event) {
+    blc.on('pointerover', function () {
       blc.alpha = 1;
     });
-    blc.on('pointerout', function (event) {
+    blc.on('pointerout', function () {
       blc.alpha = 0.5;
     });
-    blc.on('pointerdown', function (pointer) {
-      if (gameState.betAmount + 100 <= b) {
+    blc.on('pointerdown', function () {
+      if (gameState.betAmount + 100 <= b && gameState.betAmount + 100 <= 200) {
         gameState.betAmount += 100;
         gameState.updateAmount = true;
       }
@@ -175,13 +175,13 @@ class bet extends Phaser.Scene {
 
     //Bet button effects
     let betB = this.add.image((configWidth / 2) - 150, configHeight - 50, 'betButton').setScale(0.12).setInteractive();
-    betB.on('pointerover', function (event) {
+    betB.on('pointerover', function () {
       betB.setScale(0.15);
     });
-    betB.on('pointerout', function (event) {
+    betB.on('pointerout', function () {
       betB.setScale(0.12);
     });
-    betB.on('pointerdown', function (pointer) {
+    betB.on('pointerdown', function () {
       //change scene
       gameState.changeScene = true;
     });
@@ -193,13 +193,13 @@ class bet extends Phaser.Scene {
 
     //Clear button effects
     let clearB = this.add.image((configWidth / 2) + 150, configHeight - 50, 'clearButton').setScale(0.12).setInteractive();
-    clearB.on('pointerover', function (event) {
+    clearB.on('pointerover', function () {
       clearB.setScale(0.15);
     });
-    clearB.on('pointerout', function (event) {
+    clearB.on('pointerout', function () {
       clearB.setScale(0.12);
     });
-    clearB.on('pointerdown', function (pointer) {
+    clearB.on('pointerdown', function () {
       gameState.betAmount = 15;
       gameState.updateAmount = true;
     });

@@ -43,7 +43,7 @@ class preloader extends Phaser.Scene {
   }
 
   create() {
-    this.scene.start('gameover');
+    this.scene.start('newShoe');
   }
 }
 

@@ -1,13 +1,10 @@
-import { configWidth, configHeight } from '../assets/helper/gameStateVariables';
-
 class gameover extends Phaser.Scene {
   constructor(){
 		super({ key: 'gameover' })
   }
   
   create() {
-    //as seen in phaser2 pixel wave example
-      // this.add.image(configWidth / 2, configHeight / 2, 'bg');
+    //as seen in phaser3 pixel wave example
      this.cameras.main.setBackgroundColor('#ffffff');
       const source = this.textures.get('gameover').source[0].image;
       const canvas = this.textures.createCanvas('pad', 38, 42).source[0].image;
