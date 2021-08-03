@@ -18,7 +18,7 @@ npm install
 npm start
 ```
 
-##The Game
+## The Game
 
 <p align="center">Intro Scene</p>
 <p align="center">
