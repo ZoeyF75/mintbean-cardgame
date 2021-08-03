@@ -46,4 +46,6 @@ npm start
 ![chips](https://github.com/ZoeyF75/mintbean-cardgame/blob/master/readme/chips2.png?raw=true)
 ![about](https://github.com/ZoeyF75/mintbean-cardgame/blob/master/readme/About.png?raw=true)
 
+*the first three scenes were made in another repository: redesigned-doodle
+
 
