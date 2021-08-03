@@ -17,6 +17,9 @@ npm install
 ```sh
 npm start
 ```
+
+##The Game
+
 <p align="center">Intro Scene</p>
 <p align="center">
   <img width="800" height"800" src="https://media.giphy.com/media/QH2CXyFKfyj0Tg1lHf/giphy.gif" alt="animated" />
