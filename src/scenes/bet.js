@@ -130,6 +130,9 @@ class bet extends Phaser.Scene {
       if (gameState.betAmount + 1 <= b && gameState.betAmount + 1 <= 200) {
         gameState.betAmount += 1;
         gameState.updateAmount = true;
+        this.scene.sound.add("coin").play();
+      } else {
+        this.scene.sound.add("error").play();
       }
     });
 
@@ -144,6 +147,9 @@ class bet extends Phaser.Scene {
       if (gameState.betAmount + 2 <= b && gameState.betAmount + 2 <= 200) {
         gameState.betAmount += 2;
         gameState.updateAmount = true;
+        this.scene.sound.add("coin").play();
+      } else {
+        this.scene.sound.add("error").play();
       }
     });
 
@@ -158,6 +164,9 @@ class bet extends Phaser.Scene {
       if (gameState.betAmount + 5 <= b && gameState.betAmount + 5 <= 200) {
         gameState.betAmount += 5;
         gameState.updateAmount = true;
+        this.scene.sound.add("coin").play();
+      } else {
+        this.scene.sound.add("error").play();
       }
     });
 
@@ -172,6 +181,9 @@ class bet extends Phaser.Scene {
       if (gameState.betAmount + 25 <= b && gameState.betAmount + 25 <= 200) {
         gameState.betAmount += 25;
         gameState.updateAmount = true;
+        this.scene.sound.add("coin").play();
+      } else {
+        this.scene.sound.add("error").play();
       }
     });
 
@@ -186,6 +198,9 @@ class bet extends Phaser.Scene {
       if (gameState.betAmount + 100 <= b && gameState.betAmount + 100 <= 200) {
         gameState.betAmount += 100;
         gameState.updateAmount = true;
+        this.scene.sound.add("coin").play();
+      } else {
+        this.scene.sound.add("error").play();
       }
     });
 

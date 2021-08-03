@@ -18,6 +18,15 @@ import quit from '../assets/quit.png';
 import gameover from '../assets/gameover.png';
 import pixel from '../assets/16x16.png';
 
+import lose from '../assets/sounds/lose.mp3';
+import loseFF from '../assets/sounds/lose.ogg';
+import jackpot from '../assets/sounds/jackpot.mp3';
+import jackpotFF from '../assets/sounds/jackpot.ogg';
+import coin from '../assets/sounds/coin.mp3';
+import coinFF from '../assets/sounds/coin.ogg';
+import error from '../assets/sounds/error.mp3';
+import errorFF from '../assets/sounds/error.ogg';
+
 class preloader extends Phaser.Scene {
   constructor(){
 		super({ key: 'preloader' })
@@ -44,6 +53,12 @@ class preloader extends Phaser.Scene {
 
     this.load.image('gameover', gameover);
     this.load.image('pixel', pixel);
+
+    this.load.audio("lose", [lose, loseFF]);
+    this.load.audio("jackpot", [jackpot, jackpotFF]);
+    this.load.audio("coin", [coin, coinFF]);
+    this.load.audio("error", [error, errorFF]);
+
   }
 
   create() {

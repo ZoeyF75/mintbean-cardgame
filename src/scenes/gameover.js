@@ -7,7 +7,7 @@ class gameover extends Phaser.Scene {
   create() {
     //as seen in phaser3 pixel wave example
      this.cameras.main.setBackgroundColor('#ffffff');
-
+     this.sound.add("lose").play();
      const quitButton = this.add.image(configWidth - 50, 25, 'quit').setScale(0.12).setAlpha(0.5).setInteractive();
      quitButton.on('pointerover', function () {
        quitButton.alpha = 1;

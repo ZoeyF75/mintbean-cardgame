@@ -75,6 +75,8 @@ class outcome extends Phaser.Scene {
 
   displayText(change, colour) {
     this.currentAlpha = 0;
+    if (colour == '#FF0000') this.sound.add("lose").play();
+    if (colour == '#B0FC38') this.sound.add("jackpot").play();
     this.addition = this.add.text(configWidth / 2 + 200, (configHeight / 2) - 150, `${change}`, {
       fill: colour,
       fontSize: "50px",
@@ -85,19 +87,18 @@ class outcome extends Phaser.Scene {
   displayTotal() {
     this.chips = calculateBalance(this.balance);
     let x = 0;
-    let ytemp = 0;
 
     if (this.chips.purple > 0) {
-      ytemp = (configHeight / 2) + 150;
+      x = this.findx(x);
+      let y = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.purple; i++) {
-        this.add.image(configWidth / 2, ytemp, 'purplechip').setScale(0.15).setOrigin(0.5);
-        ytemp -= 20;
+        this.add.image(x, y, 'purplechip').setScale(0.15).setOrigin(0.5);
+        y -= 20;
       }
     }
     if (this.chips.black > 0) {
       x = this.findx(x);
-      let y;
-      this.chips.purple > 1 ? y = ytemp: y = (configHeight / 2) + 150;
+      let y = (configHeight / 2) + 150;
       for (let i = 0; i < this.chips.black; i++) {
         this.add.image(x, y, 'blackchip').setScale(0.15).setOrigin(0.5);
         y -= 20;

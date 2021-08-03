@@ -32,6 +32,14 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.mp3$/,
+        use: 'file-loader'
+      },
+      {
+        test: /\.ogg$/,
+        use: 'file-loader'
+      }
     ],
   },
 };
