@@ -21,7 +21,8 @@ const config = {
     width: 800,
     height: 600,
     scene: [preloader, intro, bet, deal, outcome, gameover, newShoe],
-    autoCenter: true
+    autoCenter: true,
+    parent: "mygame"
 };
 
 const game = new Phaser.Game(config);
