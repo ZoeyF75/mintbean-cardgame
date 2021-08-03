@@ -2,7 +2,7 @@
 
 This game was creating using Phaser.js and JavaScript. The webpage was built using Tailwind CSS.
 
-[You can play this game on Heroku at ](https://thawing-basin-31009.herokuapp.com/)
+You can play the game[here!](https://thawing-basin-31009.herokuapp.com/)
 
 ## Setup
 
@@ -36,5 +36,11 @@ npm start
 <p align="center">
   <img width="800" height"800" src="https://media.giphy.com/media/HRry10UNGBWaBQaFRZ/giphy.gif" alt="animated" />
 </p>
+
+## Additional Images
+
+![rules](https://github.com/ZoeyF75/mintbean-cardgame/blob/master/readme/rules.png?raw=true)
+![chips](https://github.com/ZoeyF75/mintbean-cardgame/blob/master/readme/chips2.png?raw=true)
+![about](https://github.com/ZoeyF75/mintbean-cardgame/blob/master/readme/About.png?raw=true)
 
 
