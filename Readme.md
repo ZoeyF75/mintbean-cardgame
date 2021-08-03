@@ -2,6 +2,8 @@
 
 This game was creating using Phaser.js and JavaScript. The webpage was built using Tailwind CSS.
 
+[You can play this game on Heroku at ](https://thawing-basin-31009.herokuapp.com/)
+
 ## Setup
 
 Install dependencies with
@@ -23,6 +25,16 @@ npm start
 <p align="center">Placing a Bet</p>
 <p align="center">
   <img width="800" height"800" src="https://media.giphy.com/media/T66k0mf6edkKk7Xav2/giphy.gif" alt="animated" />
+</p>
+
+<p align="center">Card Play</p>
+<p align="center">
+  <img width="800" height"800" src="https://media.giphy.com/media/dH1tFjYgr4enEjlrsR/giphy.gif" alt="animated" />
+</p>
+
+<p align="center">Game Over</p>
+<p align="center">
+  <img width="800" height"800" src="https://media.giphy.com/media/HRry10UNGBWaBQaFRZ/giphy.gif" alt="animated" />
 </p>
 
 
