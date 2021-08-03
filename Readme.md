@@ -9,7 +9,7 @@ You can play the game [here!](https://thawing-basin-31009.herokuapp.com/)
 Install dependencies with
 
 ```sh
-npm start
+npm install
 ```
 
 ## Running Webpack Development Server
