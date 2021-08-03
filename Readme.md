@@ -16,7 +16,7 @@ npm start
 npm start
 ```
 
-![Alt Text] Intro Scene(https://media.giphy.com/media/QH2CXyFKfyj0Tg1lHf/giphy.gif)
+Intro Scene![Alt Text](https://media.giphy.com/media/QH2CXyFKfyj0Tg1lHf/giphy.gif)
 
 ![Alt Text](https://media.giphy.com/media/T66k0mf6edkKk7Xav2/giphy.gif)
 
