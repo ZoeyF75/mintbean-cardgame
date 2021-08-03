@@ -2,7 +2,7 @@
 
 This game was creating using Phaser.js and JavaScript. The webpage was built using Tailwind CSS.
 
-You can play the game[here!](https://thawing-basin-31009.herokuapp.com/)
+You can play the game [here!](https://thawing-basin-31009.herokuapp.com/)
 
 ## Setup
 
